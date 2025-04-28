@@ -26,6 +26,20 @@ app.get("/produtos", async (req, res) => {
   return res.json(rows);
 });
 
+app.post("/produtos", async (req, res) => {
+  const { nome, descricao, preco } = req.body;
+  const [result] = await pool
+    .promise()
+    .query("INSERT INTO produtos (nome, descricao, preco) VALUES (?, ?, ?)", [
+      nome,
+      descricao,
+      preco,
+    ]);
+  return res.status(201).json({
+    message: "Produto criado com sucesso!",
+  });
+});
+
 app.listen(port, () => {
   console.log(`Aplicação rodando em: http://localhost:${port}`);
 });
